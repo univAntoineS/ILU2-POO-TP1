@@ -5,6 +5,13 @@ import personnages.Gaulois;
 
 public class Village {
 
+	public class VillageSansChefException extends Exception
+	{
+		public VillageSansChefException(String errorMessage) {
+	        super(errorMessage);
+	    }
+	};
+	
 	public class Marche {
 
 		private Etal[] etals;
@@ -152,16 +159,28 @@ public class Village {
 	}
 
 	public String afficherVillageois() {
-		StringBuilder chaine = new StringBuilder();
-		if (nbVillageois < 1) {
-			chaine.append("Il n'y a encore aucun habitant au village du chef " + chef.getNom() + ".\n");
-		} else {
-			chaine.append("Au village du chef " + chef.getNom() + " vivent les légendaires gaulois :\n");
-			for (int i = 0; i < nbVillageois; i++) {
-				chaine.append("- " + villageois[i].getNom() + "\n");
+		try
+		{
+			if(chef == null)
+			{
+				throw new VillageSansChefException("Le village n'a pas de chef");
 			}
+			StringBuilder chaine = new StringBuilder();
+			if (nbVillageois < 1) {
+				chaine.append("Il n'y a encore aucun habitant au village du chef " + chef.getNom() + ".\n");
+			} else {
+				chaine.append("Au village du chef " + chef.getNom() + " vivent les légendaires gaulois :\n");
+				for (int i = 0; i < nbVillageois; i++) {
+					chaine.append("- " + villageois[i].getNom() + "\n");
+				}
+			}
+			return chaine.toString();
 		}
-		return chaine.toString();
+		catch(VillageSansChefException e)
+		{
+			System.err.println(e.getMessage());
+			return "";
+		}
 	}
 
 	public String installerVendeur(Gaulois gaulois, String produit, int quantite) {
