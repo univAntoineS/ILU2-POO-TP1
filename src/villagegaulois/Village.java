@@ -158,9 +158,8 @@ public class Village {
 		return affichage.toString();
 	}
 
-	public String afficherVillageois() {
-		try
-		{
+	public String afficherVillageois() throws VillageSansChefException {
+
 			if(chef == null)
 			{
 				throw new VillageSansChefException("Le village n'a pas de chef");
@@ -175,12 +174,6 @@ public class Village {
 				}
 			}
 			return chaine.toString();
-		}
-		catch(VillageSansChefException e)
-		{
-			System.err.println(e.getMessage());
-			return "";
-		}
 	}
 
 	public String installerVendeur(Gaulois gaulois, String produit, int quantite) {
